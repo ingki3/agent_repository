@@ -90,12 +90,17 @@ module.exports = {
     },
     {
       /**
-       * BIZ-230 mockup screens still use inline FlatList renderItem components.
-       * They are scheduled to be rewritten to the TECH §2.2 layout in M1-*
-       * sub-issues (S-02/S-03/S-10/S-11/S-12/S-13). Until then, suppress the
-       * unstable-nested-components warning here only.
+       * BIZ-230 mockup screens (moved into `(main)/` by BIZ-268 foundation)
+       * still use inline FlatList renderItem components. They are scheduled to
+       * be rewritten to the TECH §2.2 layout in M1 sub 4 / sub 5 / sub 6.
+       * Until then, suppress the unstable-nested-components warning here only.
        */
-      files: ['app/index.tsx', 'app/buddies.tsx', 'app/chat/**', 'app/add-buddy.tsx'],
+      files: [
+        'app/(main)/inbox.tsx',
+        'app/(main)/buddies.tsx',
+        'app/(main)/chat/**',
+        'app/(main)/add-buddy.tsx',
+      ],
       rules: {
         'react/no-unstable-nested-components': 'off',
       },

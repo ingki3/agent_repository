@@ -48,6 +48,7 @@ export default function AddBuddyScreen() {
     <SafeAreaView style={{ flex: 1, backgroundColor: color('surface') }}>
       <Stack.Screen
         options={{
+          presentation: 'modal',
           title: '버디 추가',
           headerLeft: () => (
             <Pressable

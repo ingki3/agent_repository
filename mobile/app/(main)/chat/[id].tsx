@@ -10,7 +10,7 @@ import { View, Text, FlatList, KeyboardAvoidingView, Platform } from 'react-nati
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useBuddiesStore } from '@/application/stores/buddies';
-import { useMessagesStore } from '@/application/stores/messages';
+import { useChatStore } from '@/application/stores/chat';
 import { Avatar } from '@/ui/components/Avatar';
 import { ChatBubble } from '@/ui/components/ChatBubble';
 import { ChatInputBar } from '@/ui/components/ChatInputBar';
@@ -21,8 +21,8 @@ export default function ChatScreen() {
   const { color } = useTheme();
   const { id } = useLocalSearchParams<{ id: string }>();
   const buddy = useBuddiesStore((s) => s.buddies.find((b) => b.id === id));
-  const messages = useMessagesStore((s) => (id ? (s.byBuddy[id] ?? []) : []));
-  const send = useMessagesStore((s) => s.send);
+  const messages = useChatStore((s) => (id ? (s.byBuddy[id] ?? []) : []));
+  const send = useChatStore((s) => s.send);
   const listRef = useRef<FlatList>(null);
 
   useEffect(() => {

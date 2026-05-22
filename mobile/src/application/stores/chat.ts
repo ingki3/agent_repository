@@ -2,7 +2,7 @@ import { create } from 'zustand';
 
 import { messagesByBuddy as messageFixtures, type Message } from '@/lib/mock/fixtures';
 
-type MessagesState = {
+type ChatState = {
   byBuddy: Record<string, Message[]>;
   send: (buddyId: string, text: string) => void;
   receive: (buddyId: string, text: string) => void;
@@ -14,7 +14,7 @@ const cannedAgentReplies = [
   '관련 정보를 정리하는 중이에요. 곧 카드로 답변드릴게요.',
 ];
 
-export const useMessagesStore = create<MessagesState>((set) => ({
+export const useChatStore = create<ChatState>((set) => ({
   byBuddy: messageFixtures,
   send: (buddyId, text) => {
     if (!text.trim()) return;

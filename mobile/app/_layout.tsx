@@ -1,30 +1,20 @@
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import '@/i18n';
 import { ThemeProvider, useTheme } from '@/ui/theme/ThemeProvider';
 
-function StackWithTheme() {
-  const { color, mode } = useTheme();
+function RootStack() {
+  const { mode } = useTheme();
   return (
     <>
       <StatusBar style={mode === 'dark' ? 'light' : 'dark'} />
-      <Stack
-        screenOptions={{
-          headerStyle: { backgroundColor: color('surface') },
-          headerTintColor: color('text-primary'),
-          headerTitleStyle: { fontWeight: '600' },
-          contentStyle: { backgroundColor: color('surface') },
-        }}
-      >
-        <Stack.Screen name="index" options={{ title: 'Inbox' }} />
-        <Stack.Screen name="buddies" options={{ title: '버디 목록' }} />
-        <Stack.Screen
-          name="chat/[id]"
-          options={{ title: '채팅', headerBackButtonDisplayMode: 'minimal' }}
-        />
-        <Stack.Screen name="add-buddy" options={{ presentation: 'modal', title: '버디 추가' }} />
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="index" />
+        <Stack.Screen name="(auth)" />
+        <Stack.Screen name="(main)" />
       </Stack>
     </>
   );
@@ -32,10 +22,12 @@ function StackWithTheme() {
 
 export default function RootLayout() {
   return (
-    <SafeAreaProvider>
-      <ThemeProvider>
-        <StackWithTheme />
-      </ThemeProvider>
-    </SafeAreaProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <ThemeProvider>
+          <RootStack />
+        </ThemeProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   );
 }
