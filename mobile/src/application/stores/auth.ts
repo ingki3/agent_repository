@@ -41,6 +41,12 @@ export type AuthState = {
   resendCode: (channel?: 'sms' | 'voice') => Promise<boolean>;
   resetCodeFlow: () => void;
   signOut: () => Promise<void>;
+  /**
+   * Synchronously return the state machine to GUEST. Used by the sign-out usecase
+   * after it has wiped SecureStore/SQLite/AsyncStorage on its own. Does NOT touch
+   * persistent storage — callers must clear it first.
+   */
+  resetToGuest: () => void;
   handleUnauthorized: () => Promise<void>;
   clearError: () => void;
 };
@@ -67,6 +73,20 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   pending: false,
 
   clearError: () => set({ lastError: null }),
+
+  resetToGuest: () => {
+    inFlight?.abort();
+    inFlight = null;
+    set({
+      status: 'guest',
+      phoneE164: null,
+      requestId: null,
+      codeExpiresAt: null,
+      tokenExpiresAt: null,
+      lastError: null,
+      pending: false,
+    });
+  },
 
   resetCodeFlow: () => {
     inFlight?.abort();

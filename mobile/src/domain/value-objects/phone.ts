@@ -71,3 +71,43 @@ export function maskE164(value: string): string {
   if (!isValidE164(value)) return '***';
   return `${value.slice(0, 3)}***${value.slice(-4)}`;
 }
+
+/**
+ * Lookup the country entry whose dialCode is the longest prefix of an E.164 value.
+ * Used by the settings profile card to format the redacted display string.
+ */
+export function findCountryByDialCode(e164: string): CountryEntry | undefined {
+  if (!e164.startsWith('+')) return undefined;
+  const sorted = [...COUNTRIES].sort((a, b) => b.dialCode.length - a.dialCode.length);
+  return sorted.find((c) => e164.startsWith(c.dialCode));
+}
+
+/**
+ * Human-friendly redaction for the settings profile card (TECH §5 — Sensitive UI).
+ *
+ * Examples:
+ *   "+821012345678" -> "+82 10-****-5678"
+ *   "+15551234567"  -> "+1 ****-4567"
+ *   ""              -> ""
+ */
+export function maskE164ForDisplay(e164: string | null | undefined): string {
+  if (!e164) return '';
+  const trimmed = e164.trim();
+  if (trimmed.length === 0) return '';
+  const country = trimmed.startsWith('+') ? findCountryByDialCode(trimmed) : undefined;
+  if (country) {
+    const national = trimmed.slice(country.dialCode.length);
+    if (country.code === 'KR' && national.length >= 6) {
+      const head = national.slice(0, 2);
+      const tail = national.slice(-4);
+      return `${country.dialCode} ${head}-****-${tail}`;
+    }
+    if (national.length >= 4) {
+      const tail = national.slice(-4);
+      return `${country.dialCode} ****-${tail}`;
+    }
+    return `${country.dialCode} ****`;
+  }
+  if (trimmed.length >= 4) return `****-${trimmed.slice(-4)}`;
+  return '****';
+}

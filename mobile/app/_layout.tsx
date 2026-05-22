@@ -74,6 +74,7 @@ function StackWithTheme() {
           name="add-buddy"
           options={{ presentation: "modal", title: "버디 추가" }}
         />
+        <Stack.Screen name="(main)" options={{ headerShown: false }} />
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
       </Stack>
     </>

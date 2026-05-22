@@ -21,7 +21,30 @@ export default function InboxScreen() {
   if (buddies.length === 0) {
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: color("surface") }} edges={["bottom"]}>
-        <Stack.Screen options={{ title: "Inbox" }} />
+        <Stack.Screen
+          options={{
+            title: "Inbox",
+            headerLeft: () => (
+              <Pressable
+                onPress={() => router.push("/(main)/settings")}
+                accessibilityRole="button"
+                accessibilityLabel="설정 열기"
+                hitSlop={8}
+                style={{ paddingHorizontal: space[2], minWidth: touch.min }}
+              >
+                <Text
+                  style={{
+                    color: color("primary"),
+                    fontSize: fontSize["title-md"],
+                    fontWeight: "600",
+                  }}
+                >
+                  ⚙︎
+                </Text>
+              </Pressable>
+            ),
+          }}
+        />
         <View
           style={{
             flex: 1,
@@ -77,6 +100,19 @@ export default function InboxScreen() {
       <Stack.Screen
         options={{
           title: "Inbox",
+          headerLeft: () => (
+            <Pressable
+              onPress={() => router.push("/(main)/settings")}
+              accessibilityRole="button"
+              accessibilityLabel="설정 열기"
+              hitSlop={8}
+              style={{ paddingHorizontal: space[2], minWidth: touch.min }}
+            >
+              <Text style={{ color: color("primary"), fontSize: fontSize["title-md"], fontWeight: "600" }}>
+                ⚙︎
+              </Text>
+            </Pressable>
+          ),
           headerRight: () => (
             <Pressable
               onPress={() => router.push("/buddies")}
