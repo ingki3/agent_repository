@@ -1,23 +1,24 @@
-import { useState } from "react";
-import { View, TextInput, Pressable, Text } from "react-native";
-import { useTheme } from "@/design/theme";
-import { fontSize, radius, space, touch } from "@/design/tokens";
+import { useState } from 'react';
+import { View, TextInput, Pressable, Text } from 'react-native';
+
+import { useTheme } from '@/ui/theme/ThemeProvider';
+import { fontSize, radius, space, touch } from '@/ui/theme/tokens';
 
 export function ChatInputBar({
   onSend,
-  placeholder = "메시지 보내기",
+  placeholder = '메시지 보내기',
 }: {
   onSend: (text: string) => void;
   placeholder?: string;
 }) {
   const { color } = useTheme();
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState('');
 
   const handleSend = () => {
     const trimmed = value.trim();
     if (!trimmed) return;
     onSend(trimmed);
-    setValue("");
+    setValue('');
   };
 
   const canSend = value.trim().length > 0;
@@ -25,15 +26,15 @@ export function ChatInputBar({
   return (
     <View
       style={{
-        flexDirection: "row",
-        alignItems: "flex-end",
+        flexDirection: 'row',
+        alignItems: 'flex-end',
         gap: space[2],
         paddingHorizontal: space[3],
         paddingTop: space[2],
         paddingBottom: space[3],
-        backgroundColor: color("surface"),
+        backgroundColor: color('surface'),
         borderTopWidth: 1,
-        borderTopColor: color("border"),
+        borderTopColor: color('border'),
       }}
     >
       <Pressable
@@ -46,33 +47,33 @@ export function ChatInputBar({
           width: touch.min,
           height: touch.min,
           borderRadius: radius.full,
-          backgroundColor: color("surface-elevated"),
-          alignItems: "center",
-          justifyContent: "center",
+          backgroundColor: color('surface-elevated'),
+          alignItems: 'center',
+          justifyContent: 'center',
         }}
       >
-        <Text style={{ fontSize: fontSize["title-sm"] }}>🎙️</Text>
+        <Text style={{ fontSize: fontSize['title-sm'] }}>🎙️</Text>
       </Pressable>
 
       <View
         style={{
           flex: 1,
-          backgroundColor: color("surface-elevated"),
+          backgroundColor: color('surface-elevated'),
           borderRadius: radius.xl,
           paddingHorizontal: space[4],
           paddingVertical: space[2],
           minHeight: touch.min,
-          justifyContent: "center",
+          justifyContent: 'center',
         }}
       >
         <TextInput
           value={value}
           onChangeText={setValue}
           placeholder={placeholder}
-          placeholderTextColor={color("text-secondary")}
+          placeholderTextColor={color('text-secondary')}
           multiline
           style={{
-            color: color("text-primary"),
+            color: color('text-primary'),
             fontSize: fontSize.body,
             paddingVertical: 0,
             maxHeight: 120,
@@ -91,16 +92,16 @@ export function ChatInputBar({
           width: touch.min,
           height: touch.min,
           borderRadius: radius.full,
-          backgroundColor: color(canSend ? "primary" : "surface-elevated"),
-          alignItems: "center",
-          justifyContent: "center",
+          backgroundColor: color(canSend ? 'primary' : 'surface-elevated'),
+          alignItems: 'center',
+          justifyContent: 'center',
         }}
       >
         <Text
           style={{
-            color: color(canSend ? "on-primary" : "text-disabled"),
-            fontSize: fontSize["title-sm"],
-            fontWeight: "700",
+            color: color(canSend ? 'on-primary' : 'text-disabled'),
+            fontSize: fontSize['title-sm'],
+            fontWeight: '700',
           }}
         >
           ↑

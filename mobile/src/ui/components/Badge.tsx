@@ -1,6 +1,7 @@
-import { View, Text } from "react-native";
-import { useTheme } from "@/design/theme";
-import { fontSize, radius, space } from "@/design/tokens";
+import { View, Text } from 'react-native';
+
+import { useTheme } from '@/ui/theme/ThemeProvider';
+import { fontSize, radius, space } from '@/ui/theme/tokens';
 
 export function UnreadBadge({ count }: { count: number }) {
   const { color } = useTheme();
@@ -12,20 +13,20 @@ export function UnreadBadge({ count }: { count: number }) {
         height: 22,
         paddingHorizontal: space[2],
         borderRadius: radius.full,
-        backgroundColor: color("primary"),
-        alignItems: "center",
-        justifyContent: "center",
+        backgroundColor: color('primary'),
+        alignItems: 'center',
+        justifyContent: 'center',
       }}
       accessibilityLabel={`읽지 않은 메시지 ${count}건`}
     >
       <Text
         style={{
-          color: color("on-primary"),
+          color: color('on-primary'),
           fontSize: fontSize.caption,
-          fontWeight: "700",
+          fontWeight: '700',
         }}
       >
-        {count > 99 ? "99+" : count}
+        {count > 99 ? '99+' : count}
       </Text>
     </View>
   );

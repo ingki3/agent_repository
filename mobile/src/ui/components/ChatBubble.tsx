@@ -1,32 +1,33 @@
-import { View, Text } from "react-native";
-import { useTheme } from "@/design/theme";
-import { fontSize, radius, space } from "@/design/tokens";
-import type { Message } from "@/mock/fixtures";
+import { View, Text } from 'react-native';
 
-const STATUS_LABEL: Record<NonNullable<Message["status"]>, string> = {
-  sending: "보내는 중",
-  sent: "보냄",
-  delivered: "전달됨",
-  failed: "실패",
-  "queued-offline": "오프라인 대기",
+import type { Message } from '@/lib/mock/fixtures';
+import { useTheme } from '@/ui/theme/ThemeProvider';
+import { fontSize, radius, space } from '@/ui/theme/tokens';
+
+const STATUS_LABEL: Record<NonNullable<Message['status']>, string> = {
+  sending: '보내는 중',
+  sent: '보냄',
+  delivered: '전달됨',
+  failed: '실패',
+  'queued-offline': '오프라인 대기',
 };
 
 function formatTime(iso: string) {
   const d = new Date(iso);
-  const hh = String(d.getHours()).padStart(2, "0");
-  const mm = String(d.getMinutes()).padStart(2, "0");
+  const hh = String(d.getHours()).padStart(2, '0');
+  const mm = String(d.getMinutes()).padStart(2, '0');
   return `${hh}:${mm}`;
 }
 
 export function ChatBubble({ message }: { message: Message }) {
   const { color } = useTheme();
-  const isUser = message.author === "user";
-  const isSystem = message.author === "system";
+  const isUser = message.author === 'user';
+  const isSystem = message.author === 'system';
 
   if (isSystem) {
     return (
-      <View style={{ paddingVertical: space[3], alignItems: "center" }}>
-        <Text style={{ color: color("text-secondary"), fontSize: fontSize.caption }}>
+      <View style={{ paddingVertical: space[3], alignItems: 'center' }}>
+        <Text style={{ color: color('text-secondary'), fontSize: fontSize.caption }}>
           {message.text}
         </Text>
       </View>
@@ -36,16 +37,16 @@ export function ChatBubble({ message }: { message: Message }) {
   return (
     <View
       style={{
-        flexDirection: "row",
-        justifyContent: isUser ? "flex-end" : "flex-start",
+        flexDirection: 'row',
+        justifyContent: isUser ? 'flex-end' : 'flex-start',
         paddingHorizontal: space[4],
         paddingVertical: space[1],
       }}
     >
-      <View style={{ maxWidth: "78%" }}>
+      <View style={{ maxWidth: '78%' }}>
         <View
           style={{
-            backgroundColor: color(isUser ? "user-bubble" : "agent-bubble"),
+            backgroundColor: color(isUser ? 'user-bubble' : 'agent-bubble'),
             borderRadius: radius.bubble,
             paddingHorizontal: space[4],
             paddingVertical: space[3],
@@ -55,7 +56,7 @@ export function ChatBubble({ message }: { message: Message }) {
         >
           <Text
             style={{
-              color: color(isUser ? "on-user-bubble" : "on-agent-bubble"),
+              color: color(isUser ? 'on-user-bubble' : 'on-agent-bubble'),
               fontSize: fontSize.body,
               lineHeight: fontSize.body * 1.45,
             }}
@@ -67,18 +68,18 @@ export function ChatBubble({ message }: { message: Message }) {
 
         <View
           style={{
-            flexDirection: "row",
-            justifyContent: isUser ? "flex-end" : "flex-start",
+            flexDirection: 'row',
+            justifyContent: isUser ? 'flex-end' : 'flex-start',
             gap: space[2],
             marginTop: space[1],
             paddingHorizontal: space[1],
           }}
         >
-          <Text style={{ color: color("text-secondary"), fontSize: fontSize.caption }}>
+          <Text style={{ color: color('text-secondary'), fontSize: fontSize.caption }}>
             {formatTime(message.createdAt)}
           </Text>
           {message.status ? (
-            <Text style={{ color: color("text-secondary"), fontSize: fontSize.caption }}>
+            <Text style={{ color: color('text-secondary'), fontSize: fontSize.caption }}>
               · {STATUS_LABEL[message.status]}
             </Text>
           ) : null}
@@ -88,22 +89,22 @@ export function ChatBubble({ message }: { message: Message }) {
           <View
             style={{
               marginTop: space[2],
-              backgroundColor: color("trace-summary"),
+              backgroundColor: color('trace-summary'),
               borderRadius: radius.lg,
               paddingHorizontal: space[3],
               paddingVertical: space[2],
-              alignSelf: isUser ? "flex-end" : "flex-start",
+              alignSelf: isUser ? 'flex-end' : 'flex-start',
             }}
           >
             <Text
               style={{
-                color: color("on-trace-summary"),
+                color: color('on-trace-summary'),
                 fontSize: fontSize.caption,
-                fontWeight: "600",
+                fontWeight: '600',
               }}
             >
-              🧠 {message.traceSummary.thinkingSteps}단계 · 🛠 {message.traceSummary.toolCalls}개 툴 · ⏱{" "}
-              {(message.traceSummary.elapsedMs / 1000).toFixed(1)}초
+              🧠 {message.traceSummary.thinkingSteps}단계 · 🛠 {message.traceSummary.toolCalls}개 툴
+              · ⏱ {(message.traceSummary.elapsedMs / 1000).toFixed(1)}초
             </Text>
           </View>
         ) : null}

@@ -2,13 +2,14 @@
  * S-21 · 버디(채널) 목록
  * pen frame: JCqD4 (Light) / svfdd (Dark)
  */
-import { View, FlatList, Pressable, Text } from "react-native";
-import { useRouter, Stack } from "expo-router";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useTheme } from "@/design/theme";
-import { fontSize, space } from "@/design/tokens";
-import { useBuddiesStore } from "@/store/buddies";
-import { BuddyRow } from "@/components/BuddyRow";
+import { useRouter, Stack } from 'expo-router';
+import { View, FlatList, Pressable, Text } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+import { useBuddiesStore } from '@/application/stores/buddies';
+import { BuddyRow } from '@/ui/components/BuddyRow';
+import { useTheme } from '@/ui/theme/ThemeProvider';
+import { fontSize, space } from '@/ui/theme/tokens';
 
 export default function BuddyListScreen() {
   const { color } = useTheme();
@@ -16,18 +17,18 @@ export default function BuddyListScreen() {
   const buddies = useBuddiesStore((s) => s.buddies);
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: color("surface") }} edges={["bottom"]}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: color('surface') }} edges={['bottom']}>
       <Stack.Screen
         options={{
-          title: "버디 목록",
+          title: '버디 목록',
           headerRight: () => (
             <Pressable
-              onPress={() => router.push("/add-buddy")}
+              onPress={() => router.push('/add-buddy')}
               accessibilityLabel="버디 추가"
               hitSlop={8}
               style={{ paddingHorizontal: space[2] }}
             >
-              <Text style={{ color: color("primary"), fontSize: 22, fontWeight: "300" }}>+</Text>
+              <Text style={{ color: color('primary'), fontSize: 22, fontWeight: '300' }}>+</Text>
             </Pressable>
           ),
         }}
@@ -40,7 +41,7 @@ export default function BuddyListScreen() {
           paddingBottom: space[2],
         }}
       >
-        <Text style={{ color: color("text-secondary"), fontSize: fontSize["body-sm"] }}>
+        <Text style={{ color: color('text-secondary'), fontSize: fontSize['body-sm'] }}>
           에이전트를 선택해 대화를 시작하세요.
         </Text>
       </View>
@@ -49,14 +50,10 @@ export default function BuddyListScreen() {
         data={buddies}
         keyExtractor={(b) => b.id}
         renderItem={({ item }) => (
-          <BuddyRow
-            buddy={item}
-            variant="list"
-            onPress={() => router.push(`/chat/${item.id}`)}
-          />
+          <BuddyRow buddy={item} variant="list" onPress={() => router.push(`/chat/${item.id}`)} />
         )}
         ItemSeparatorComponent={() => (
-          <View style={{ height: 1, backgroundColor: color("border"), marginLeft: 76 }} />
+          <View style={{ height: 1, backgroundColor: color('border'), marginLeft: 76 }} />
         )}
       />
     </SafeAreaView>

@@ -1,7 +1,8 @@
-import { View, Text, type ViewStyle } from "react-native";
-import { useTheme } from "@/design/theme";
-import { fontSize, radius } from "@/design/tokens";
-import type { AccentSlot } from "@/mock/fixtures";
+import { View, Text, type ViewStyle } from 'react-native';
+
+import type { AccentSlot } from '@/lib/mock/fixtures';
+import { useTheme } from '@/ui/theme/ThemeProvider';
+import { fontSize, radius } from '@/ui/theme/tokens';
 
 export function Avatar({
   name,
@@ -20,7 +21,7 @@ export function Avatar({
     .map((p) => p[0]?.toUpperCase())
     .filter(Boolean)
     .slice(0, 2)
-    .join("");
+    .join('');
 
   return (
     <View
@@ -30,8 +31,8 @@ export function Avatar({
           height: size,
           borderRadius: radius.full,
           backgroundColor: color(accent),
-          alignItems: "center",
-          justifyContent: "center",
+          alignItems: 'center',
+          justifyContent: 'center',
         },
         style,
       ]}
@@ -40,12 +41,12 @@ export function Avatar({
     >
       <Text
         style={{
-          color: color("on-primary"),
-          fontWeight: "700",
-          fontSize: size >= 40 ? fontSize["title-sm"] : fontSize["body-sm"],
+          color: color('on-primary'),
+          fontWeight: '700',
+          fontSize: size >= 40 ? fontSize['title-sm'] : fontSize['body-sm'],
         }}
       >
-        {initials || "?"}
+        {initials || '?'}
       </Text>
     </View>
   );
