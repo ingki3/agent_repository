@@ -60,8 +60,8 @@ module.exports = {
      * - domain layer: pure TS, must not import RN/Expo/UI/infra/application/lib.
      * - application layer: may import domain only; must NOT import infrastructure
      *   (use ports/interfaces instead) or ui.
-     * - ui/app layer may import application + domain + lib. infrastructure should
-     *   only be wired in app/_layout (DI root) — flagged via warn-level for now.
+     * - infrastructure layer: must not import application stores or ui — wire-up
+     *   happens at the composition root (app/_layout).
      */
     'import/no-restricted-paths': [
       'error',
@@ -76,6 +76,11 @@ module.exports = {
             target: './src/application',
             from: ['./src/infrastructure', './src/ui', './app'],
             message: 'application must depend on ports, not on infrastructure/ui directly',
+          },
+          {
+            target: './src/infrastructure',
+            from: ['./src/application', './src/ui', './app'],
+            message: 'infrastructure must not import application/ui — wire it at the composition root',
           },
         ],
       },
@@ -103,6 +108,15 @@ module.exports = {
       ],
       rules: {
         'react/no-unstable-nested-components': 'off',
+      },
+    },
+    {
+      /** Tests get any/require freely; layer-boundary rule still applies via main config. */
+      files: ['__tests__/**/*.ts', '__tests__/**/*.tsx'],
+      rules: {
+        'import/no-restricted-paths': 'off',
+        '@typescript-eslint/no-explicit-any': 'off',
+        '@typescript-eslint/no-var-requires': 'off',
       },
     },
   ],
