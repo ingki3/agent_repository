@@ -138,62 +138,75 @@ export default function OtpScreen() {
           </Text>
         </View>
 
-        <Pressable
-          onPress={() => inputRef.current?.focus()}
-          accessibilityRole="button"
-          accessibilityLabel="인증번호 입력"
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            gap: space[2],
-          }}
-        >
-          {cells.map((cell, i) => (
-            <View
-              key={i}
-              style={{
-                flex: 1,
-                aspectRatio: 1,
-                borderWidth: 1.5,
-                borderColor: color(cell.focused ? "primary" : "border-strong"),
-                borderRadius: radius.md,
-                alignItems: "center",
-                justifyContent: "center",
-                backgroundColor: color("surface-elevated"),
-              }}
-            >
-              <Text
+        {/*
+          iOS surfaces the OTP autofill QuickType chip only when the focused
+          TextInput has a visible-sized on-screen frame; a 1×1 / opacity:0 field
+          is detected but the chip is suppressed (BIZ-292). Overlay the input
+          on top of the 6-cell row so its frame matches the visual cells while
+          remaining transparent to the user.
+        */}
+        <View style={{ position: "relative" }}>
+          <Pressable
+            onPress={() => inputRef.current?.focus()}
+            accessibilityRole="button"
+            accessibilityLabel="인증번호 입력"
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              gap: space[2],
+            }}
+          >
+            {cells.map((cell, i) => (
+              <View
+                key={i}
                 style={{
-                  color: color("text-primary"),
-                  fontSize: fontSize["title-lg"],
-                  fontWeight: "700",
+                  flex: 1,
+                  aspectRatio: 1,
+                  borderWidth: 1.5,
+                  borderColor: color(cell.focused ? "primary" : "border-strong"),
+                  borderRadius: radius.md,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  backgroundColor: color("surface-elevated"),
                 }}
               >
-                {cell.ch}
-              </Text>
-            </View>
-          ))}
-        </Pressable>
+                <Text
+                  style={{
+                    color: color("text-primary"),
+                    fontSize: fontSize["title-lg"],
+                    fontWeight: "700",
+                  }}
+                >
+                  {cell.ch}
+                </Text>
+              </View>
+            ))}
+          </Pressable>
 
-        <TextInput
-          ref={inputRef}
-          value={code}
-          onChangeText={handleChange}
-          onSubmitEditing={handleSubmit}
-          keyboardType="number-pad"
-          autoComplete="sms-otp"
-          textContentType="oneTimeCode"
-          importantForAutofill="yes"
-          maxLength={CODE_LENGTH}
-          editable={!expired}
-          style={{
-            position: "absolute",
-            opacity: 0,
-            width: 1,
-            height: 1,
-          }}
-          accessibilityLabel="인증번호 입력 필드"
-        />
+          <TextInput
+            ref={inputRef}
+            value={code}
+            onChangeText={handleChange}
+            onSubmitEditing={handleSubmit}
+            keyboardType="number-pad"
+            autoComplete="sms-otp"
+            textContentType="oneTimeCode"
+            importantForAutofill="yes"
+            maxLength={CODE_LENGTH}
+            editable={!expired}
+            caretHidden
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              opacity: 0.01,
+              color: "transparent",
+            }}
+            accessibilityLabel="인증번호 입력 필드"
+          />
+        </View>
 
         <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
           <Text
